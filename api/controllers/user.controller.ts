@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import { User } from "../models/index.js";
 import { generateToken } from "../utils/generateToken.util.js";
+import { CustomRequest } from "../interfaces/base.interfaces.js";
 
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -84,7 +85,11 @@ const logoutUser = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json({ message: "Logged out successfully" });
 });
 
-const getUser = asyncHandler(async (req: Request, res: Response) => {});
+const getUser = asyncHandler(async (req: CustomRequest, res: Response) => {
+  const { _id, name, email, photo, phone, bio } = req.user;
+  const user = { _id, name, email, photo, phone, bio };
+  res.status(200).json(user);
+});
 
 const updateUser = asyncHandler(async (req: Request, res: Response) => {});
 
