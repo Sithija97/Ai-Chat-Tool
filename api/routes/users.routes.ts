@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  getLoginStatus,
+  getLoggedInStatus,
   getUser,
   loginUser,
   logoutUser,
@@ -15,6 +15,6 @@ userRouter.post("/login", loginUser);
 userRouter.get("/logout", logoutUser);
 userRouter.get("/getUser", protect, getUser);
 userRouter.put("/updateUser", updateUser);
-userRouter.get("/getLoginStatus", getLoginStatus);
+userRouter.get("/loggedIn", getLoggedInStatus);
 
 export { userRouter };

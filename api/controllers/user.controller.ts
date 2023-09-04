@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { User } from "../models/index.js";
 import { generateToken } from "../utils/generateToken.util.js";
 import { CustomRequest } from "../interfaces/base.interfaces.js";
@@ -91,9 +92,43 @@ const getUser = asyncHandler(async (req: CustomRequest, res: Response) => {
   res.status(200).json(user);
 });
 
-const updateUser = asyncHandler(async (req: Request, res: Response) => {});
+const updateUser = asyncHandler(async (req: CustomRequest, res: Response) => {
+  const user = await User.findById(req.user._id);
 
-const getLoginStatus = asyncHandler(async (req: Request, res: Response) => {});
+  if (user) {
+    const { name, email, photo, phone, bio } = user;
+    user.email = email;
+    user.name = req.body.name || name;
+    user.phone = req.body.phone || phone;
+    user.bio = req.body.bio || bio;
+    user.photo = req.body.photo || photo;
+
+    const updatedUser = await user.save();
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      photo: updatedUser.photo,
+      phone: updatedUser.phone,
+      bio: updatedUser.bio,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+const getLoggedInStatus = async (req: Request, res: Response) => {
+  const token = req.cookies.jwt;
+  if (!token) {
+    return res.json(false);
+  }
+  const verified = jwt.verify(token, process.env.JWT_SECRET);
+  if (verified) {
+    return res.json(true);
+  }
+  return res.json(false);
+};
 
 export {
   registerUser,
@@ -101,5 +136,5 @@ export {
   logoutUser,
   getUser,
   updateUser,
-  getLoginStatus,
+  getLoggedInStatus,
 };
