@@ -130,6 +130,38 @@ const getLoggedInStatus = async (req: Request, res: Response) => {
   return res.json(false);
 };
 
+const changePassword = asyncHandler(
+  async (req: CustomRequest, res: Response) => {
+    const user = await User.findById(req.user._id);
+    const { oldPassword, password } = req.body;
+
+    if (!user) {
+      res.status(400);
+      throw new Error("User not found, please signup");
+    }
+
+    if (!oldPassword || !password) {
+      res.status(400);
+      throw new Error("Please add old and new password");
+    }
+
+    const passwordIsCorrect = await bcrypt.compare(oldPassword, user.password);
+
+    if (user && passwordIsCorrect) {
+      user.password = password;
+      await user.save();
+      res.status(200).send({ message: "Password changed successfully" });
+    } else {
+      res.status(400);
+      throw new Error("Old password is incorrect");
+    }
+  }
+);
+
+const forgetPassword = asyncHandler(
+  async (req: CustomRequest, res: Response) => {}
+);
+
 export {
   registerUser,
   loginUser,
@@ -137,4 +169,6 @@ export {
   getUser,
   updateUser,
   getLoggedInStatus,
+  changePassword,
+  forgetPassword,
 };

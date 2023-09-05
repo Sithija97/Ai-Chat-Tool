@@ -1,5 +1,7 @@
 import express from "express";
 import {
+  changePassword,
+  forgetPassword,
   getLoggedInStatus,
   getUser,
   loginUser,
@@ -14,7 +16,9 @@ userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
 userRouter.get("/logout", logoutUser);
 userRouter.get("/getUser", protect, getUser);
-userRouter.put("/updateUser", updateUser);
-userRouter.get("/loggedIn", getLoggedInStatus);
+userRouter.patch("/updateuser", protect, updateUser);
+userRouter.get("/loggedin", getLoggedInStatus);
+userRouter.patch("/changepassword", protect, changePassword);
+userRouter.patch("/forgetpassword", protect, forgetPassword);
 
 export { userRouter };
