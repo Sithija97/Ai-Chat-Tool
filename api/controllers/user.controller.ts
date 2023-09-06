@@ -2,9 +2,11 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { User } from "../models/index.js";
+import { Token, User } from "../models/index.js";
 import { generateToken } from "../utils/generateToken.util.js";
 import { CustomRequest } from "../interfaces/base.interfaces.js";
+import { createHash, randomBytes } from "crypto";
+import { sendEmail } from "../utils/sendEmail.util.js";
 
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -159,7 +161,57 @@ const changePassword = asyncHandler(
 );
 
 const forgetPassword = asyncHandler(
-  async (req: CustomRequest, res: Response) => {}
+  async (req: CustomRequest, res: Response) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (user) {
+      res.status(400);
+      throw new Error("User does not exists");
+    }
+
+    let token = await Token.findOne({ userId: user._id });
+    if (token) {
+      await token.deleteOne();
+    }
+
+    let resetToken = randomBytes(32).toString("hex") + user._id;
+    console.log(resetToken);
+
+    const hashedToken = createHash("sha256").update(resetToken).digest("hex");
+    console.log(hashedToken);
+
+    await Token.create({
+      userId: user._id,
+      token: hashedToken,
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 30 * (60 * 1000), // Thirty minutes
+    });
+
+    const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
+
+    const message = `
+    <h2>Hello ${user.name}</h2>
+    <p>Please use the url below to reset your password</p>  
+    <p>This reset link is valid for only 30minutes.</p>
+
+    <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
+
+    <p>Regards...</p>
+    <p>Pinvent Team</p>
+  `;
+    const subject = "Password Reset Request";
+    const send_to = user.email;
+    const sent_from = process.env.EMAIL_USER;
+
+    try {
+      await sendEmail(subject, message, send_to, sent_from);
+      res.status(200).json({ success: true, message: "Reset Email Sent" });
+    } catch (error) {
+      res.status(500);
+      throw new Error("Email not sent, please try again");
+    }
+  }
 );
 
 export {

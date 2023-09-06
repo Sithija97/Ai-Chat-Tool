@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export interface IUser extends Document {
   name: string;
@@ -7,4 +7,11 @@ export interface IUser extends Document {
   photo: string;
   phone: string;
   bio: string;
+}
+
+export interface IToken extends Document {
+  userId: Types.ObjectId;
+  token: string;
+  createdAt: Date;
+  expiresAt: Date;
 }
