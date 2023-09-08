@@ -125,6 +125,8 @@ const getLoggedInStatus = async (req: Request, res: Response) => {
   if (!token) {
     return res.json(false);
   }
+
+  // Verify Token
   const verified = jwt.verify(token, process.env.JWT_SECRET);
   if (verified) {
     return res.json(true);
@@ -142,13 +144,16 @@ const changePassword = asyncHandler(
       throw new Error("User not found, please signup");
     }
 
+    // Validation
     if (!oldPassword || !password) {
       res.status(400);
       throw new Error("Please add old and new password");
     }
 
+    // check if old password matches password in DB
     const passwordIsCorrect = await bcrypt.compare(oldPassword, user.password);
 
+    // Save new password
     if (user && passwordIsCorrect) {
       user.password = password;
       await user.save();
@@ -170,17 +175,21 @@ const forgetPassword = asyncHandler(
       throw new Error("User does not exists");
     }
 
+    // Delete token if it exists in DB
     let token = await Token.findOne({ userId: user._id });
     if (token) {
       await token.deleteOne();
     }
 
+    // Create Reset Token
     let resetToken = randomBytes(32).toString("hex") + user._id;
     console.log(resetToken);
 
+    // Hash token before saving to DB
     const hashedToken = createHash("sha256").update(resetToken).digest("hex");
     console.log(hashedToken);
 
+    // Save Token to DB
     await Token.create({
       userId: user._id,
       token: hashedToken,
@@ -188,8 +197,10 @@ const forgetPassword = asyncHandler(
       expiresAt: Date.now() + 30 * (60 * 1000), // Thirty minutes
     });
 
+    // Construct Reset Url
     const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
 
+    // Reset Email
     const message = `
     <h2>Hello ${user.name}</h2>
     <p>Please use the url below to reset your password</p>  
@@ -214,6 +225,33 @@ const forgetPassword = asyncHandler(
   }
 );
 
+const resetPassword = asyncHandler(async (req: Request, res: Response) => {
+  const { password } = req.body;
+  const { resetToken } = req.params;
+
+  // Hash token, then compare to Token in DB
+  const hashedToken = createHash("sha256").update(resetToken).digest("hex");
+
+  // find token from DB
+  const userToken = await Token.findOne({
+    token: hashedToken,
+    expiresAt: { $gt: Date.now() },
+  });
+
+  if (!userToken) {
+    res.status(404);
+    throw new Error("Invalid or Expired Token");
+  }
+
+  // Find user
+  const user = await User.findOne({ _id: userToken.userId });
+  user.password = password;
+  await user.save();
+  res.status(200).json({
+    message: "Password Reset Successful, Please Login",
+  });
+});
+
 export {
   registerUser,
   loginUser,
@@ -223,4 +261,5 @@ export {
   getLoggedInStatus,
   changePassword,
   forgetPassword,
+  resetPassword,
 };

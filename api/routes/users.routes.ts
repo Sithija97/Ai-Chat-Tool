@@ -7,6 +7,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  resetPassword,
   updateUser,
 } from "../controllers/user.controller.js";
 import { protect } from "../middleware/index.js";
@@ -16,9 +17,10 @@ userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
 userRouter.get("/logout", logoutUser);
 userRouter.get("/getUser", protect, getUser);
-userRouter.patch("/updateuser", protect, updateUser);
 userRouter.get("/loggedin", getLoggedInStatus);
+userRouter.patch("/updateuser", protect, updateUser);
 userRouter.patch("/changepassword", protect, changePassword);
-userRouter.patch("/forgetpassword", protect, forgetPassword);
+userRouter.post("/forgetpassword", protect, forgetPassword);
+userRouter.put("/resetpassword/:resetToken", resetPassword);
 
 export { userRouter };
