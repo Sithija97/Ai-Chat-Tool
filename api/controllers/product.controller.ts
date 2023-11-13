@@ -63,4 +63,107 @@ const createProduct = asyncHandler(
   }
 );
 
-export { createProduct };
+const getProducts = asyncHandler(async (req: CustomRequest, res: Response) => {
+  const products = await Product.find({ user: req.user._id }).sort(
+    "-createdAt"
+  );
+  res.status(200).json(products);
+});
+
+const getProduct = asyncHandler(async (req: CustomRequest, res: Response) => {
+  const product = await Product.findById(req.params.id);
+
+  if (!product) {
+    res.status(404);
+    throw new Error("Product not found");
+  }
+
+  if (product.user.toString() !== req.user._id.toString()) {
+    res.status(401);
+    throw new Error("User is not authorized");
+  }
+
+  res.status(200).json(product);
+});
+
+const updateProduct = asyncHandler(
+  async (req: CustomRequest, res: Response) => {
+    const { name, description, sku, category, quantity, price } = req.body;
+
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      res.status(404);
+      throw new Error("Product not found");
+    }
+
+    if (product.user.toString() !== req.user._id.toString()) {
+      res.status(401);
+      throw new Error("User is not authorized");
+    }
+
+    /* file uploading */
+    let fileData = {};
+
+    if (req.file) {
+      /* save file to cloudinary */
+      let uploadedFile;
+
+      try {
+        uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+          folder: "InventoMate App",
+          resource_type: "image",
+        });
+      } catch (error) {
+        console.error("Error uploading file to Cloudinary:", error);
+        throw new Error("Error uploading file to Cloudinary");
+      }
+
+      fileData = {
+        fileName: req.file.originalname,
+        filePath: uploadedFile.secure_url,
+        fileType: req.file.mimetype,
+        fileSize: fileSizeFormatter(req.file.size, 2),
+      };
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        name,
+        category,
+        quantity,
+        price,
+        description,
+        image: Object.keys(fileData).length === 0 ? product?.image : fileData,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    res.status(200).json(updatedProduct);
+  }
+);
+
+const deleteProduct = asyncHandler(
+  async (req: CustomRequest, res: Response) => {
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      res.status(404);
+      throw new Error("Product not found");
+    }
+
+    if (product.user.toString() !== req.user._id.toString()) {
+      res.status(401);
+      throw new Error("User is not authorized");
+    }
+
+    await product.deleteOne();
+    res.status(200).json(product);
+  }
+);
+
+export { createProduct, getProducts, getProduct, updateProduct, deleteProduct };
