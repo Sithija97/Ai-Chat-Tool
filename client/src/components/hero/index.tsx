@@ -1,54 +1,86 @@
-import { Box, Heading, Container, Text, Button, Stack } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Heading, Stack } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
-export default function Hero() {
+type IHeroProps = {
+  title: string;
+  subtitle: string;
+  image: string;
+  ctaText: string;
+  ctaLink: string;
+};
+
+export const Hero = ({
+  title,
+  subtitle,
+  image,
+  ctaLink,
+  ctaText,
+}: IHeroProps) => {
   return (
-    <>
-      <Container maxW={"3xl"}>
-        <Stack
-          as={Box}
-          textAlign={"center"}
-          spacing={{ base: 8, md: 14 }}
-          py={{ base: 20, md: 36 }}
+    <Flex
+      align="center"
+      justify={{ base: "center", md: "space-around", xl: "space-between" }}
+      direction={{ base: "column-reverse", md: "row" }}
+      wrap="nowrap"
+      minH="70vh"
+      px={8}
+      mb={16}
+    >
+      <Stack
+        spacing={4}
+        w={{ base: "80%", md: "40%" }}
+        align={["center", "center", "flex-start", "flex-start"]}
+      >
+        <Heading
+          as="h1"
+          size="xl"
+          fontWeight="bold"
+          color="primary.800"
+          textAlign={["center", "center", "left", "left"]}
         >
-          <Heading
-            fontWeight={700}
-            fontSize={{ base: "2xl", sm: "4xl", md: "6xl" }}
-            lineHeight={"110%"}
+          {title}
+        </Heading>
+        <Heading
+          as="h2"
+          size="md"
+          color="primary.800"
+          opacity="0.8"
+          fontWeight="normal"
+          lineHeight={1.5}
+          textAlign={["center", "center", "left", "left"]}
+        >
+          {subtitle}
+        </Heading>
+        <Link to={ctaLink}>
+          <Button
+            colorScheme="facebook"
+            borderRadius="8px"
+            py="4"
+            px="4"
+            lineHeight="1"
+            size="md"
           >
-            Make money from <br />
-            <Text as={"span"} color={"facebook.400"}>
-              your audience
-            </Text>
-          </Heading>
-          <Text color={"gray.500"}>
-            Monetize your content by charging your most loyal readers and reward
-            them loyalty points. Give back to your loyal readers by granting
-            them access to your pre-releases and sneak-peaks.
-          </Text>
-          <Stack
-            direction={"column"}
-            spacing={3}
-            align={"center"}
-            alignSelf={"center"}
-            position={"relative"}
-          >
-            <Button
-              colorScheme={"facebook"}
-              bg={"facebook.400"}
-              rounded={"full"}
-              px={6}
-              _hover={{
-                bg: "facebook.500",
-              }}
-            >
-              Get Started
-            </Button>
-            <Button variant={"link"} colorScheme={"blue"} size={"sm"}>
-              Learn more
-            </Button>
-          </Stack>
-        </Stack>
-      </Container>
-    </>
+            {ctaText}
+          </Button>
+        </Link>
+      </Stack>
+      <Box
+        w={{ base: "90%", sm: "70%", md: "60%" }}
+        mb={{ base: 12, md: 0 }}
+        ml={10}
+      >
+        <Image src={image} sizes="100%" rounded="1rem" shadow="2xl" />
+      </Box>
+    </Flex>
   );
-}
+};
+
+Hero.defaultProps = {
+  title: "React landing page with Chakra UI",
+  subtitle:
+    "This is the subheader section where you describe the basic benefits of your product",
+  image:
+    "https://img.freepik.com/premium-vector/vector-illustration-concept-inventory-control-warehouse-management_675567-3044.jpg?w=1380",
+  ctaText: "Create your account now",
+  ctaLink: "/signup",
+};
