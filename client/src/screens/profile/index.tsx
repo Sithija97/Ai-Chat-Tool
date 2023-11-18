@@ -25,7 +25,7 @@ import { useRef, useState } from "react";
 import { Auth_Method } from "../../enums";
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string(),
+  name: Yup.string(),
   password: Yup.string().min(6, "Password must be at least 6 characters"),
   oldPassword: Yup.string().min(6, "Password must be at least 6 characters"),
 });
@@ -70,8 +70,8 @@ export const Profile = () => {
   };
 
   const handleProfileUpdate = async () => {
-    const { username } = formik.values;
-    const response = await dispatch(updateUser({ username }));
+    const { name } = formik.values;
+    const response = await dispatch(updateUser({ name }));
 
     if (response.meta.requestStatus === "fulfilled") {
       toast({
@@ -100,7 +100,7 @@ export const Profile = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: user?.username || "",
+      name: user?.name || "",
       photo: user?.photo || "",
       password: "",
       oldPassword: "",
@@ -132,7 +132,7 @@ export const Profile = () => {
             <Center>
               <Avatar
                 size="xl"
-                name={formik.values.username}
+                name={formik.values.name}
                 src={formik.values.photo}
                 cursor="pointer"
                 onClick={() => inputRef?.current?.click()}
@@ -164,20 +164,17 @@ export const Profile = () => {
             </Center>
           </Stack>
         </FormControl>
-        <FormControl
-          id="userName"
-          isInvalid={formik.errors.username ? true : false}
-        >
+        <FormControl id="name" isInvalid={formik.errors.name ? true : false}>
           <FormLabel>User name</FormLabel>
           <Input
-            name="username"
+            name="name"
             placeholder="user name"
             _placeholder={{ color: "gray.500" }}
             type="text"
             onChange={formik.handleChange}
-            value={formik.values.username}
+            value={formik.values.name}
           />
-          <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
+          <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
         </FormControl>
         {user?.authMethod === Auth_Method.EMAIL && (
           <>

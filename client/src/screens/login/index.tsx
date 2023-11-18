@@ -75,7 +75,7 @@ export const Login = () => {
       const { displayName, email, photoURL } = result.user;
 
       const userObj: loginWithGoogleInputs = {
-        username: displayName!,
+        name: displayName!,
         email: email!,
         photo: photoURL!,
         authMethod: Auth_Method.GOOGLE,

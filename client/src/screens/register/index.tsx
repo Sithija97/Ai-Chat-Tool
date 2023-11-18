@@ -26,7 +26,7 @@ import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { Loader } from "../../components";
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string().required("Username is required"),
+  name: Yup.string().required("name is required"),
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
@@ -39,7 +39,7 @@ const validationSchema = Yup.object().shape({
 });
 
 type registerInputData = {
-  username: string;
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -58,7 +58,7 @@ export const Register = () => {
   const bgColorBox = useColorModeValue("white", "gray.700");
 
   const handleSubmit = async (values: registerInputData) => {
-    const { username, email, password, confirmPassword } = values;
+    const { name, email, password, confirmPassword } = values;
     if (password !== confirmPassword) {
       toast({
         title: "Passwords don't match, please check again.",
@@ -68,7 +68,7 @@ export const Register = () => {
         duration: 5000,
       });
     } else {
-      const response = await dispatch(register({ username, email, password }));
+      const response = await dispatch(register({ name, email, password }));
       if (response.meta.requestStatus === "fulfilled") {
         toast({
           title: "User created Successfully.",
@@ -94,7 +94,7 @@ export const Register = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -119,23 +119,21 @@ export const Register = () => {
           <form onSubmit={formik.handleSubmit}>
             <Stack spacing={4}>
               <FormControl
-                id="username"
+                id="name"
                 isRequired
                 isInvalid={
-                  formik.touched.username && formik.errors.username
-                    ? true
-                    : false
+                  formik.touched.name && formik.errors.name ? true : false
                 }
               >
-                <FormLabel>Username</FormLabel>
+                <FormLabel>name</FormLabel>
                 <Input
                   type="text"
-                  name="username"
+                  name="name"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.username}
+                  value={formik.values.name}
                 />
-                <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
+                <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
               </FormControl>
               <FormControl
                 id="email"

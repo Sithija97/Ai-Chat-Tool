@@ -110,7 +110,7 @@ export const Navbar = () => {
           >
             Sign Out
           </Button>
-          <Avatar size="sm" name={user?.username} src={user?.photo} />
+          <Avatar size="sm" name={user?.name} src={user?.photo} />
         </Stack>
       </Flex>
 
