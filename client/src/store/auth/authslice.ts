@@ -70,10 +70,36 @@ export const updateUser = createAsyncThunk(
 );
 
 export const changePassword = createAsyncThunk(
-  "auth/update-user",
+  "auth/change-password",
   async (payload: changePasswordInputs, thunkAPI) => {
     try {
       const response = await authService.changePassword(payload);
+      return response.data;
+    } catch (error: any) {
+      const message = error.response.data.message;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const forgotPassword = createAsyncThunk(
+  "auth/forgot-password",
+  async (payload: string, thunkAPI) => {
+    try {
+      const response = await authService.forgotPassword(payload);
+      return response.data;
+    } catch (error: any) {
+      const message = error.response.data.message;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "auth/reset-password",
+  async (payload: string, thunkAPI) => {
+    try {
+      const response = await authService.resetPassword(payload);
       return response.data;
     } catch (error: any) {
       const message = error.response.data.message;

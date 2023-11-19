@@ -30,7 +30,20 @@ const update = async (payload: userUpdateInputs) => {
 };
 
 const changePassword = async (payload: changePasswordInputs) => {
-  const response = await axios.patch(`${BASE_URL}/changepassword`, payload);
+  const response = await axios.patch(`${BASE_URL}/change-password`, payload);
+  return response;
+};
+
+const forgotPassword = async (payload: string) => {
+  const response = await axios.patch(`${BASE_URL}/forgot-password`, payload);
+  return response;
+};
+
+const resetPassword = async (payload: string) => {
+  const response = await axios.patch(
+    `${BASE_URL}/reset-password/:restToken`,
+    payload
+  );
   return response;
 };
 
@@ -40,6 +53,8 @@ const authService = {
   loginWithGoogle,
   update,
   changePassword,
+  forgotPassword,
+  resetPassword,
 };
 
 export default authService;

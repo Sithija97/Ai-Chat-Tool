@@ -21,7 +21,7 @@ import {
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { DASHBOARD, REGISTER } from "../../routes";
+import { DASHBOARD, FORGOTPASSWORD, REGISTER } from "../../routes";
 import { loginInputs } from "../../models";
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { login, loginWithGoogle } from "../../store/auth/authslice";
@@ -177,7 +177,13 @@ export const Login = () => {
                   justify={"space-between"}
                 >
                   <Checkbox>Remember me</Checkbox>
-                  <Text color={"facebook.400"}>Forgot password?</Text>
+                  <Text
+                    as={RouterLink}
+                    to={FORGOTPASSWORD}
+                    color={"facebook.400"}
+                  >
+                    Forgot password?
+                  </Text>
                 </Stack>
                 <Button
                   type="submit"
