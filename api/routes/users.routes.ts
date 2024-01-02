@@ -19,8 +19,8 @@ userRouter.get("/logout", logoutUser);
 userRouter.get("/getUser", protect, getUser);
 userRouter.get("/loggedin", getLoggedInStatus);
 userRouter.patch("/updateuser", protect, updateUser);
-userRouter.patch("/changepassword", protect, changePassword);
-userRouter.post("/forgetpassword", protect, forgetPassword);
-userRouter.put("/resetpassword/:resetToken", resetPassword);
+userRouter.patch("/change-password", protect, changePassword);
+userRouter.post("/forgot-password", protect, forgetPassword);
+userRouter.put("/reset-password/:resetToken", resetPassword);
 
 export { userRouter };
