@@ -1,13 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { Navbar } from "../../components";
-import { RootState, useAppSelector } from "../../store/store";
+import { Sidebar } from "../components/sidebar";
 
 type IProps = {
   children: React.ReactNode;
 };
 
 export const PrivateRoute = ({ children }: IProps) => {
-  const { user } = useAppSelector((state: RootState) => state.auth);
+  // const { user } = useAppSelector((state: RootState) => state.auth);
+  const user = true;
 
   if (!user) {
     return <Navigate to="/login" />;
@@ -17,10 +17,13 @@ export const PrivateRoute = ({ children }: IProps) => {
 };
 
 export const Layout = () => {
+  // const dispatch = useAppDispatch();
   return (
     <PrivateRoute>
-      <Navbar />
-      <Outlet />
+      <Sidebar />
+      <main className="ml-16">
+        <Outlet />
+      </main>
     </PrivateRoute>
   );
 };
