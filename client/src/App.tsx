@@ -1,10 +1,20 @@
-import React from "react";
+import { FileUpload, Header, Summary, type FileType } from "@/molecules";
+import { useState } from "react";
 
 const App = () => {
+  const [uploadFile, setUploadedFile] = useState<FileType | null>(null);
+
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </div>
+    <>
+      <main className="container">
+        <Header />
+        {uploadFile ? (
+          <Summary file={uploadFile} />
+        ) : (
+          <FileUpload setFile={setUploadedFile} />
+        )}
+      </main>
+    </>
   );
 };
 
