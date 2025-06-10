@@ -147,6 +147,6 @@
   }
 
   img {
-    @apply max-w-full mb-6;
+    @apply max-w-[10%] mb-6;
   }
 }

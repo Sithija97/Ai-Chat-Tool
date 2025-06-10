@@ -7,6 +7,7 @@ type IProps = {
 export type FileType = {
   type: string;
   file: string; // base64 encoded string
+  imageUrl: string; // URL for the file object
 };
 
 export const FileUpload = ({ setFile }: IProps) => {
@@ -19,9 +20,13 @@ export const FileUpload = ({ setFile }: IProps) => {
       return;
     }
     const fileUpload = await fileObj.arrayBuffer();
+
     const file = {
       type: fileObj.type,
       file: Buffer.from(fileUpload).toString("base64"),
+      imageUrl: fileObj.type.includes("pdf")
+        ? "/pdf-icon.png"
+        : URL.createObjectURL(fileObj),
     };
     setFile(file);
     console.log(file);

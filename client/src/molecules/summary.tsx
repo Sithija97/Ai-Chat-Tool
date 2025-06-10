@@ -2,6 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import type { FileType } from "./file-upload";
 import { useEffect, useState } from "react";
 import { STATUS } from "@/enums";
+import { LoaderCircle } from "lucide-react";
 
 type IProps = {
   file: FileType;
@@ -50,10 +51,23 @@ export const Summary = ({ file }: IProps) => {
     }
   }, []);
 
+  const renderContent = () => {
+    switch (status) {
+      case STATUS.LOADING:
+        return <LoaderCircle className="animate-spin animate-duration-2000" />;
+      case STATUS.SUCCESS:
+        return <p>{summary}</p>;
+      case STATUS.ERROR:
+        return <p>Error generating summary. Please try again.</p>;
+      default:
+    }
+  };
+
   return (
     <section className="summary">
+      <img src={file.imageUrl} alt="image preview" />
       <h2>Summary</h2>
-      {status === STATUS.LOADING ? <p>loading...</p> : <p>{summary}</p>}
+      {renderContent()}
     </section>
   );
 };
