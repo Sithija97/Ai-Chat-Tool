@@ -1,7 +1,11 @@
+import { Button, Input } from "@/atoms";
 import { Buffer } from "buffer";
+import { PaperclipIcon } from "lucide-react";
+import { useRef } from "react";
 
 type IProps = {
   setFile: React.Dispatch<React.SetStateAction<FileType | null>>;
+  custoInputStyle?: string;
 };
 
 export type FileType = {
@@ -10,7 +14,9 @@ export type FileType = {
   imageUrl: string; // URL for the file object
 };
 
-export const FileUpload = ({ setFile }: IProps) => {
+export const FileUpload = ({ custoInputStyle, setFile }: IProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -32,17 +38,28 @@ export const FileUpload = ({ setFile }: IProps) => {
     console.log(file);
   };
 
+  const handleButtonClick = () => {
+    inputRef.current?.click();
+  };
+
   return (
-    <section>
-      <h2>Get Started</h2>
-      <input
-        type="file"
-        name="file-uploader"
-        id="file-uploader"
-        multiple
-        accept=".pdf, .jpg, jpeg, .png"
-        onChange={handleFileUpload}
-      />
+    <section className="file-upload">
+      <div className="grid items-center gap-3">
+        <Input
+          ref={inputRef}
+          id="picture"
+          type="file"
+          name="file-uploader"
+          accept=".pdf, .jpg, jpeg, .png"
+          onChange={handleFileUpload}
+          className={custoInputStyle}
+        />
+
+        <Button variant="ghost" size="sm" onClick={handleButtonClick}>
+          <PaperclipIcon />
+          Add photos and files
+        </Button>
+      </div>
     </section>
   );
 };
