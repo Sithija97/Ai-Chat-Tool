@@ -14,16 +14,16 @@ export const ChatInput = ({ setFile }: IProps) => {
   return (
     <div>
       {/* Main Content Area */}
-      <div className="flex-1 flex items-end justify-center py-8">
+      <div className="flex-1 flex items-end justify-center ">
         <div className="w-full max-w-3xl px-4">
           {/* Input Container */}
-          <div className="relative rounded-lg border border-slate-300">
+          <div className="relative rounded-lg">
             {/* Textarea */}
             <Textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Ask anything"
-              className="w-full bg-transparent border-0 resize-none text-gray-700 placeholder-gray-400 text-base leading-relaxed p-4 pr-16 min-h-[60px] max-h-[200px] focus:outline-none focus:ring-0 focus:border-transparent"
+              className="w-full bg-white border-0 resize-none text-gray-700 placeholder-gray-400 text-base leading-relaxed p-4 pr-16 min-h-[60px] max-h-[200px] focus:outline-none focus:ring-0 focus:border-transparent"
               rows={1}
             />
 
@@ -53,7 +53,7 @@ export const ChatInput = ({ setFile }: IProps) => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg px-3 py-2 text-sm flex items-center gap-1"
+                className="text-gray-400 bg-white hover:text-white hover:bg-gray-800 rounded-lg px-3 py-2 text-sm flex items-center gap-1"
               >
                 <Settings className="h-4 w-4" />
                 <span className="text-xs">Tools</span>
