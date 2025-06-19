@@ -1,7 +1,18 @@
 @import "tailwindcss";
+@plugin "tailwindcss-debug-screens";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+
+@theme {
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  --breakpoint-3xl: 1800px;
+  --breakpoint-4xl: 2200px;
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -122,12 +133,20 @@
   }
 
   body {
-    @apply bg-background text-foreground pt-5 pb-20 text-center;
+    @apply bg-background text-foreground text-center;
   }
 
   .container {
-    @apply w-full max-w-4xl h-full mx-auto px-4;
+    @apply w-full max-w-4xl h-full mx-auto;
     width: min(860px, 95%);
+  }
+
+  .file-upload {
+    @apply flex flex-col items-center justify-center gap-4;
+  }
+
+  .summary {
+    @apply flex flex-col items-center justify-center;
   }
 
   h1 {
@@ -147,6 +166,36 @@
   }
 
   img {
-    @apply max-w-[10%] mb-6;
+    @apply max-w-[40%] mb-6;
+  }
+}
+
+/* Hide scrollbar for WebKit browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+
+.loader {
+  width: 10px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  animation: l5 1s infinite linear alternate;
+}
+@keyframes l5 {
+  0% {
+    box-shadow: 20px 0 #000, -20px 0 #0002;
+    background: #000;
+  }
+  33% {
+    box-shadow: 20px 0 #000, -20px 0 #0002;
+    background: #0002;
+  }
+  66% {
+    box-shadow: 20px 0 #0002, -20px 0 #000;
+    background: #0002;
+  }
+  100% {
+    box-shadow: 20px 0 #0002, -20px 0 #000;
+    background: #000;
   }
 }
