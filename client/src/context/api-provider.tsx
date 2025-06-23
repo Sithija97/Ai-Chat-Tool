@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 interface APIContextType {
   api: string | null;
@@ -17,8 +23,16 @@ const APIContext = createContext<APIContextType>({
 export const APIProvider = ({ children }: APIProviderProps) => {
   const [api, setApi] = useState<string>("");
 
+  useEffect(() => {
+    const storedApi = localStorage.getItem("api");
+    if (storedApi) {
+      setApi(storedApi);
+    }
+  }, []);
+
   const setApiInContext = (value: string) => {
     setApi(value);
+    localStorage.setItem("api", value);
   };
 
   return (
