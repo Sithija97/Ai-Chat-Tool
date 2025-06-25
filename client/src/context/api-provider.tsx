@@ -16,12 +16,12 @@ type APIProviderProps = {
 };
 
 const APIContext = createContext<APIContextType>({
-  api: "",
+  api: null,
   setApiInContext: () => {},
 });
 
 export const APIProvider = ({ children }: APIProviderProps) => {
-  const [api, setApi] = useState<string>("");
+  const [api, setApi] = useState<string | null>(null);
 
   useEffect(() => {
     const storedApi = localStorage.getItem("api");
