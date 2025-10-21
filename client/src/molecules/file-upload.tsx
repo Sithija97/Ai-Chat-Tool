@@ -1,21 +1,25 @@
 import { Button, Input } from "@/atoms";
-import { Buffer } from "buffer";
+import { useUploadedFile } from "@/context/file-provider";
+import { generateFile } from "@/utils";
+
 import { PaperclipIcon } from "lucide-react";
 import { useRef } from "react";
 
 type IProps = {
-  setFile: React.Dispatch<React.SetStateAction<FileType | null>>;
   custoInputStyle?: string;
+  onClose: () => void;
 };
 
 export type FileType = {
+  name: string;
   type: string;
   file: string; // base64 encoded string
   imageUrl: string; // URL for the file object
 };
 
-export const FileUpload = ({ custoInputStyle, setFile }: IProps) => {
+export const FileUpload = ({ custoInputStyle, onClose }: IProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const { setUploadedFile } = useUploadedFile();
 
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -25,21 +29,15 @@ export const FileUpload = ({ custoInputStyle, setFile }: IProps) => {
       console.error("No file selected.");
       return;
     }
-    const fileUpload = await fileObj.arrayBuffer();
 
-    const file = {
-      type: fileObj.type,
-      file: Buffer.from(fileUpload).toString("base64"),
-      imageUrl: fileObj.type.includes("pdf")
-        ? "/pdf-icon.png"
-        : URL.createObjectURL(fileObj),
-    };
-    setFile(file);
+    const file = await generateFile(fileObj);
+    setUploadedFile(file);
     console.log(file);
   };
 
   const handleButtonClick = () => {
     inputRef.current?.click();
+    onClose();
   };
 
   return (

@@ -23,7 +23,7 @@ export const ChatInput = ({ input, setInput, handleSendMessage }: IProps) => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask anything"
-              className="w-full bg-white border-0 resize-none text-gray-700 placeholder-gray-400 text-base leading-relaxed p-4 pr-16 min-h-[60px] max-h-[200px] focus:outline-none focus:ring-0 focus:border-transparent"
+              className="w-full bg-white border-0 resize-none text-gray-700 placeholder-gray-400 text-base leading-relaxed p-4 pr-16 min-h-[30px] max-h-[200px] focus:outline-none focus:ring-0 focus:border-transparent"
               rows={1}
             />
 
