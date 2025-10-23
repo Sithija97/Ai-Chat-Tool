@@ -1,16 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from "@/atoms";
 import { useUploadedFile } from "@/context/file-provider";
+import { STATUS } from "@/enums";
 import { MainTemplate } from "@/templates";
 import { generateFile } from "@/utils";
-import { CheckCircle, Upload } from "lucide-react";
+import { CheckCircle, CirclePlus, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 
 export const MainPage = () => {
-  // return <MainTemplate />;
   const { file, setUploadedFile } = useUploadedFile();
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [summary, setSummary] = useState<string>("");
+  const [studyGuide, setStudyGuide] = useState<string>("");
+  const [interviewQuestions, setInterviewQuestions] = useState<string>("");
+  const [status, setStatus] = useState<string>(STATUS.IDLE);
+  const [input, setInput] = useState<string>("");
+  const [messages, setMessages] = useState<{ role: string; text: string }[]>(
+    []
+  );
 
   const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -43,6 +52,17 @@ export const MainPage = () => {
   const openFileDialog = () => {
     fileInputRef.current?.click();
   };
+
+  const newChat = () => {
+    setSummary("");
+    setStudyGuide("");
+    setInterviewQuestions("");
+    setStatus(STATUS.IDLE);
+    setInput("");
+    setMessages([]);
+    setUploadedFile(null);
+  };
+
   return (
     <div className="w-full h-screen flex flex-col lg:flex-row overflow-hidden">
       {/* LEFT SIDE */}
@@ -84,6 +104,10 @@ export const MainPage = () => {
                     <Button variant="outline" onClick={openFileDialog}>
                       Upload Different File
                     </Button>
+                    <Button variant="outline" onClick={newChat}>
+                      <CirclePlus />
+                      New Chat
+                    </Button>
                   </div>
                 </div>
               ) : (
@@ -121,7 +145,20 @@ export const MainPage = () => {
 
       {/* RIGHT SIDE (scrollable section) */}
       <div className="h-full w-full lg:w-[40%] bg-slate-100 p-2 overflow-y-auto">
-        <MainTemplate />
+        <MainTemplate
+          summary={summary}
+          setSummary={setSummary}
+          studyGuide={studyGuide}
+          setStudyGuide={setStudyGuide}
+          interviewQuestions={interviewQuestions}
+          setInterviewQuestions={setInterviewQuestions}
+          status={status}
+          setStatus={setStatus}
+          input={input}
+          setInput={setInput}
+          messages={messages}
+          setMessages={setMessages}
+        />
       </div>
     </div>
   );

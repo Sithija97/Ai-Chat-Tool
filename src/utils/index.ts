@@ -23,6 +23,18 @@ type IProps = {
   setStatus: React.Dispatch<React.SetStateAction<string>>;
   setSummary?: React.Dispatch<React.SetStateAction<string>>;
 };
+export const cleanMarkdownResponse = (text: string): string => {
+  // Remove markdown code blocks (```html, ```, etc.)
+  let cleaned = text.replace(/```[\w]*\n?/g, "");
+
+  // Replace multiple consecutive newlines with a single one
+  cleaned = cleaned.replace(/\n{2,}/g, "\n");
+
+  // Trim leading and trailing whitespace/newlines
+  cleaned = cleaned.trim();
+
+  return cleaned;
+};
 
 export const generateFile = async (fileObj: File) => {
   const fileUpload = await fileObj.arrayBuffer();
@@ -46,7 +58,7 @@ export const generateSumary = async ({
 }: IProps) => {
   const contents = [
     {
-      text: "Summarize this document, but it should be an advanced summary about the given subject",
+      text: `Summarize this document, but it should be an advanced summary about the given subject, give me a html text which i can parse using react html parser`,
     },
     {
       inlineData: {
@@ -64,7 +76,7 @@ export const generateSumary = async ({
     });
     if (response && typeof response.text === "string" && setSummary) {
       setStatus(STATUS.SUCCESS);
-      setSummary(response.text);
+      setSummary(cleanMarkdownResponse(response.text));
     }
   } catch (error) {
     console.log(error);
@@ -139,7 +151,8 @@ export const generateStudyGuide = async ({
       Include key concepts, important topics, learning objectives, and practice questions with answers.
       If this document is not suitable for creating a study guide (e.g., not educational content, 
       not course materials, or lacks sufficient information), politely inform the user that the 
-      document may not be appropriate for generating a study guide.`,
+      document may not be appropriate for generating a study guide. if you include any html elements 
+      give me a html text which i can parse using react html parser`,
     },
     {
       inlineData: {
@@ -157,7 +170,7 @@ export const generateStudyGuide = async ({
     });
     if (response && typeof response.text === "string" && setStudyGuide) {
       setStatus(STATUS.SUCCESS);
-      setStudyGuide(response.text);
+      setStudyGuide(cleanMarkdownResponse(response.text));
     }
   } catch (error) {
     console.log(error);
@@ -187,7 +200,8 @@ export const generateInterviewQuestions = async ({
       conceptual, and practical questions.
       If this document is not suitable for creating interview questions (e.g., not professional 
       or educational content, or lacks sufficient technical depth), politely inform the user 
-      that the document may not be appropriate for generating interview questions.`,
+      that the document may not be appropriate for generating interview questions.
+      if you include any html elements give me a html text which i can parse using react html parser`,
     },
     {
       inlineData: {
@@ -209,7 +223,7 @@ export const generateInterviewQuestions = async ({
       setInterviewQuestions
     ) {
       setStatus(STATUS.SUCCESS);
-      setInterviewQuestions(response.text);
+      setInterviewQuestions(cleanMarkdownResponse(response.text));
     }
   } catch (error) {
     console.log(error);

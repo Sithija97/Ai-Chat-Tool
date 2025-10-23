@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import { useUploadedFile } from "@/context/file-provider";
 import { ChatInput, ChatMessage } from "../molecules";
 import { Bot, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   generateCoversation,
   generateInterviewQuestions,
@@ -12,20 +12,25 @@ import {
 import { STATUS } from "@/enums";
 import { CustomLoader } from "@/molecules";
 import { useAPI } from "@/context/api-provider";
+import parse from "html-react-parser";
+import type { IMainProps } from "@/templates";
 
-export const ChatWindow = () => {
+export const ChatWindow = ({
+  summary,
+  setSummary,
+  studyGuide,
+  setStudyGuide,
+  interviewQuestions,
+  setInterviewQuestions,
+  status,
+  setStatus,
+  input,
+  setInput,
+  messages,
+  setMessages,
+}: IMainProps) => {
   const { api } = useAPI();
   const { file } = useUploadedFile();
-  const [summary, setSummary] = useState<string>(
-    "Summary : This document is an introduction to Tailwind CSS, a utility-first CSS framework designed to streamline web styling and promote design consistency. It contrasts Tailwind with traditional CSS, highlighting its utility-based approach that enables styling through the application of pre-defined low-level classes, bypassing the need for writing custom CSS in many cases. The document focuses on explaining core concepts such as: * **Core Principles:** A discussion around its utility-first paradigm, responsive design using breakpoints, and dynamic states controlled via pseudo-selectors. * **Class Essentials:** Guides through the class essentials, offering a structured way to remember and organize utility classes by categories, like layout, typography, background & color, flexbox & grid, spacing, and borders. It also touches on the naming conventions, abbreviations, and modifiers used in Tailwind classes. * **Advanced Features:** Extends into dark mode implementation, leveraging the `prefers-color-scheme` media feature, and delving into functions and directives like `@tailwind`, `@layer`, `@apply`, and `@config` for advanced CSS customization and config control. * **Customization:** Customization and extendibility through its configuration file, including themes and plugins. * **Accessibility:** It emphasizes accessibility features, particularly the `sr-only` and `not-sr-only` classes for screen reader support. * **Interactivity:** Animations, transitions, and cursor management for a more dynamic and engaging user experience. * **Advanced Techniques**: Advanced tricks and special utilities that can be used to make development more efficient, such as `accent`, `fluid texts`, using less JavaScript and the `file` prefix. * **Component Libraries:** Finally, a list of component libraries available to use with Tailwind CSS is provided. In summary, this starter kit acts as a comprehensive guide to using Tailwind CSS effectively, offering a blend of introductory concepts and advanced techniques to empower developers in building efficient, responsive, accessible, and customizable web interfaces. It also highlights the resourcefulness of JS Mastery for further development."
-  );
-  const [studyGuide, setStudyGuide] = useState<string>("");
-  const [interviewQuestions, setInterviewQuestions] = useState<string>("");
-  const [status, setStatus] = useState<string>(STATUS.IDLE);
-  const [input, setInput] = useState<string>("");
-  const [messages, setMessages] = useState<{ role: string; text: string }[]>(
-    []
-  );
 
   const ai = api && new GoogleGenAI({ apiKey: api });
 
@@ -96,8 +101,8 @@ export const ChatWindow = () => {
                       />
                       <strong>Summary :</strong>
                     </p>
-                    <p className="text-black text-sm leading-relaxed text-left">
-                      {summary}
+                    <p className="text-black text-sm leading-relaxed text-left prose">
+                      {parse(summary)}
                     </p>
                   </div>
                 </div>
@@ -122,8 +127,8 @@ export const ChatWindow = () => {
                       />
                       <strong>Study Guide :</strong>
                     </p>
-                    <p className="text-black text-sm leading-relaxed text-left">
-                      {studyGuide}
+                    <p className="text-black text-sm leading-relaxed text-left prose">
+                      {parse(studyGuide)}
                     </p>
                   </div>
                 </div>

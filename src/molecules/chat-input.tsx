@@ -3,6 +3,7 @@ import { Textarea } from "@/atoms/textarea";
 import { Button } from "@/atoms";
 import { AddSection } from "@/molecules";
 import type React from "react";
+import { useUploadedFile } from "@/context";
 
 type IProps = {
   input: string;
@@ -17,8 +18,36 @@ export const ChatInput = ({
   handleSendMessage,
   handleGenerateStudyGuide,
 }: IProps) => {
+  const { file } = useUploadedFile();
   return (
     <div>
+      {/* Top Toolbar */}
+      <div className="flex items-center justify-between mr-2 mb-1 px-1">
+        <div className="flex items-center gap-2">
+          {/* <Button
+                variant="ghost"
+                size="sm"
+                className="text-gray-400 bg-white hover:text-white hover:bg-gray-800 rounded-lg px-3 py-2 text-sm flex items-center gap-1"
+                disabled
+              >
+                <Settings className="h-4 w-4" />
+                <span className="text-xs">Tools</span>
+              </Button> */}
+        </div>
+
+        {/* Send Button - appears when there's text */}
+        {input.trim() && (
+          <Button
+            size="sm"
+            disabled={!file}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            onClick={handleSendMessage}
+          >
+            <ArrowUp />
+          </Button>
+        )}
+      </div>
+
       {/* Main Content Area */}
       <div className="flex-1 flex items-end justify-center ">
         <div className="w-full max-w-3xl px-2">
@@ -51,32 +80,6 @@ export const ChatInput = ({
               </Button> */}
               <AddSection handleGenerateStudyGuide={handleGenerateStudyGuide} />
             </div>
-          </div>
-
-          {/* Bottom Toolbar */}
-          <div className="flex items-center justify-between mt-3 px-1">
-            <div className="flex items-center gap-2">
-              {/* <Button
-                variant="ghost"
-                size="sm"
-                className="text-gray-400 bg-white hover:text-white hover:bg-gray-800 rounded-lg px-3 py-2 text-sm flex items-center gap-1"
-                disabled
-              >
-                <Settings className="h-4 w-4" />
-                <span className="text-xs">Tools</span>
-              </Button> */}
-            </div>
-
-            {/* Send Button - appears when there's text */}
-            {input.trim() && (
-              <Button
-                size="sm"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                onClick={handleSendMessage}
-              >
-                <ArrowUp />
-              </Button>
-            )}
           </div>
         </div>
       </div>
