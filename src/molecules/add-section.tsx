@@ -3,7 +3,11 @@ import { PlusIcon } from "lucide-react";
 import { FileUpload } from "./file-upload";
 import { useState } from "react";
 
-export const AddSection = () => {
+type IProps = {
+  handleGenerateStudyGuide: () => void;
+};
+
+export const AddSection = ({ handleGenerateStudyGuide }: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const closePopover = () => setIsOpen(false);
@@ -19,7 +23,11 @@ export const AddSection = () => {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-48 p-2">
-        <FileUpload custoInputStyle="hidden" onClose={closePopover} />
+        <FileUpload
+          custoInputStyle="hidden"
+          onClose={closePopover}
+          handleGenerateStudyGuide={handleGenerateStudyGuide}
+        />
       </PopoverContent>
     </Popover>
   );

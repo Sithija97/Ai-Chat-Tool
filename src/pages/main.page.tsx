@@ -44,8 +44,9 @@ export const MainPage = () => {
     fileInputRef.current?.click();
   };
   return (
-    <div className="w-full min-h-screen flex flex-col lg:flex-row">
-      <div className="min-h-screen w-full lg:w-[60%] px-32 py-16">
+    <div className="w-full h-screen flex flex-col lg:flex-row overflow-hidden">
+      {/* LEFT SIDE */}
+      <div className="h-full w-full lg:w-[60%] px-32 py-16 overflow-hidden">
         <div className="space-y-6 3xl:py-8">
           <div>
             <h2 className="text-2xl font-semibold text-gray-800 mb-2">
@@ -117,7 +118,9 @@ export const MainPage = () => {
           </div>
         </div>
       </div>
-      <div className="min-h-screen w-full lg:w-[40%] bg-slate-100 2xl:p-10 3xl:p-12 overflow-y-auto">
+
+      {/* RIGHT SIDE (scrollable section) */}
+      <div className="h-full w-full lg:w-[40%] bg-slate-100 p-2 overflow-y-auto">
         <MainTemplate />
       </div>
     </div>

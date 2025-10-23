@@ -11,5 +11,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: process.env.VITE_BASE_URL || "/Ai-Chat-Tool",
+  base:
+    process.env.VITE_ENV === "production"
+      ? process.env.VITE_BASE_URL || "/Ai-Chat-Tool"
+      : undefined,
 });

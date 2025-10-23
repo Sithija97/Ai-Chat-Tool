@@ -1,13 +1,13 @@
 import { Button, Input } from "@/atoms";
 import { useUploadedFile } from "@/context/file-provider";
 import { generateFile } from "@/utils";
-
-import { PaperclipIcon } from "lucide-react";
+import { FileQuestion, MapPlus } from "lucide-react";
 import { useRef } from "react";
 
 type IProps = {
   custoInputStyle?: string;
   onClose: () => void;
+  handleGenerateStudyGuide: () => void;
 };
 
 export type FileType = {
@@ -17,7 +17,11 @@ export type FileType = {
   imageUrl: string; // URL for the file object
 };
 
-export const FileUpload = ({ custoInputStyle, onClose }: IProps) => {
+export const FileUpload = ({
+  custoInputStyle,
+  onClose,
+  handleGenerateStudyGuide,
+}: IProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { setUploadedFile } = useUploadedFile();
 
@@ -42,7 +46,7 @@ export const FileUpload = ({ custoInputStyle, onClose }: IProps) => {
 
   return (
     <section className="file-upload">
-      <div className="grid items-center gap-3">
+      <div className="flex flex-col items-start">
         <Input
           ref={inputRef}
           id="picture"
@@ -53,9 +57,17 @@ export const FileUpload = ({ custoInputStyle, onClose }: IProps) => {
           className={custoInputStyle}
         />
 
-        <Button variant="ghost" size="sm" onClick={handleButtonClick}>
+        {/* <Button variant="ghost" size="sm" onClick={handleButtonClick}>
           <PaperclipIcon />
           Add photos and files
+        </Button> */}
+        <Button variant="ghost" size="sm" onClick={handleGenerateStudyGuide}>
+          <MapPlus />
+          Study Guide
+        </Button>
+        <Button variant="ghost" size="sm" onClick={() => {}} disabled>
+          <FileQuestion />
+          Practice Questions
         </Button>
       </div>
     </section>

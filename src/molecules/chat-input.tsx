@@ -8,9 +8,15 @@ type IProps = {
   input: string;
   setInput: React.Dispatch<React.SetStateAction<string>>;
   handleSendMessage: () => void;
+  handleGenerateStudyGuide: () => void;
 };
 
-export const ChatInput = ({ input, setInput, handleSendMessage }: IProps) => {
+export const ChatInput = ({
+  input,
+  setInput,
+  handleSendMessage,
+  handleGenerateStudyGuide,
+}: IProps) => {
   return (
     <div>
       {/* Main Content Area */}
@@ -36,21 +42,21 @@ export const ChatInput = ({ input, setInput, handleSendMessage }: IProps) => {
               >
                 <Mic className="h-4 w-4" />
               </Button> */}
-              <Button
+              {/* <Button
                 variant="ghost"
                 size="sm"
                 className="h-9 w-9 p-0 text-gray-400 hover:text-white hover:bg-gray-700 rounded-full"
               >
                 <MoreHorizontal className="h-4 w-4" />
-              </Button>
+              </Button> */}
+              <AddSection handleGenerateStudyGuide={handleGenerateStudyGuide} />
             </div>
           </div>
 
           {/* Bottom Toolbar */}
           <div className="flex items-center justify-between mt-3 px-1">
             <div className="flex items-center gap-2">
-              <AddSection />
-              <Button
+              {/* <Button
                 variant="ghost"
                 size="sm"
                 className="text-gray-400 bg-white hover:text-white hover:bg-gray-800 rounded-lg px-3 py-2 text-sm flex items-center gap-1"
@@ -58,7 +64,7 @@ export const ChatInput = ({ input, setInput, handleSendMessage }: IProps) => {
               >
                 <Settings className="h-4 w-4" />
                 <span className="text-xs">Tools</span>
-              </Button>
+              </Button> */}
             </div>
 
             {/* Send Button - appears when there's text */}
