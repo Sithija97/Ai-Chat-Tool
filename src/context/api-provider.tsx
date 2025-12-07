@@ -15,24 +15,28 @@ type APIProviderProps = {
   children: ReactNode;
 };
 
-const APIContext = createContext<APIContextType>({
-  api: null,
-  setApiInContext: () => {},
-});
+const APIContext = createContext<APIContextType | undefined>(undefined);
 
 export const APIProvider = ({ children }: APIProviderProps) => {
   const [api, setApi] = useState<string | null>(null);
 
   useEffect(() => {
     const storedApi = localStorage.getItem("api");
-    if (storedApi) {
+    if (storedApi && storedApi.trim() !== "") {
       setApi(storedApi);
     }
   }, []);
 
   const setApiInContext = (value: string) => {
-    setApi(value);
-    localStorage.setItem("api", value);
+    const trimmedValue = value.trim();
+    if (trimmedValue === "") {
+      // Clear API if empty string is provided
+      setApi(null);
+      localStorage.removeItem("api");
+      return;
+    }
+    setApi(trimmedValue);
+    localStorage.setItem("api", trimmedValue);
   };
 
   return (
@@ -44,7 +48,7 @@ export const APIProvider = ({ children }: APIProviderProps) => {
 
 export const useAPI = () => {
   const context = useContext(APIContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error("useAPI must be used within APIProvider");
   }
   return context;

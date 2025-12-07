@@ -1,4 +1,4 @@
-import { Settings, MoreHorizontal, ArrowUp } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { Textarea } from "@/atoms/textarea";
 import { Button } from "@/atoms";
 import { AddSection } from "@/molecules";
@@ -58,7 +58,7 @@ export const ChatInput = ({
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask anything"
-              className="w-full bg-white border-0 resize-none text-gray-700 placeholder-gray-400 text-sm sm:text-base leading-relaxed p-2.5 sm:p-3 md:p-4 pr-12 sm:pr-14 md:pr-16 min-h-[30px] max-h-[150px] sm:max-h-[200px] focus:outline-none focus:ring-0 focus:border-transparent"
+              className="w-full bg-white border-0 resize-none text-gray-700 placeholder-gray-400 text-sm sm:text-base leading-relaxed p-2.5 sm:p-3 md:p-3 pr-12 sm:pr-14 md:pr-16 min-h-[30px] max-h-[150px] sm:max-h-[200px] focus:outline-none focus:ring-0 focus:border-transparent"
               rows={1}
             />
 
