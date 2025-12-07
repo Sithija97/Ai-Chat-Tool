@@ -37,7 +37,7 @@ export const MainTemplate = ({
   setMessages,
 }: IMainProps) => {
   return (
-    <main className="container">
+    <main className="container w-full h-full">
       <ChatWindow
         summary={summary}
         setSummary={setSummary}

@@ -22,7 +22,7 @@ export const AddSection = ({ handleGenerateStudyGuide }: IProps) => {
           <PlusIcon />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-48 p-2">
+      <PopoverContent className="w-48 sm:w-56 p-2">
         <FileUpload
           custoInputStyle="hidden"
           onClose={closePopover}

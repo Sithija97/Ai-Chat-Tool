@@ -139,7 +139,23 @@
 
   .container {
     @apply w-full max-w-4xl h-full mx-auto;
-    width: min(860px, 95%);
+    width: min(860px, 100%);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
 
   .file-upload {
@@ -151,15 +167,15 @@
   }
 
   h1 {
-    @apply text-5xl font-semibold mb-3;
+    @apply text-3xl sm:text-4xl md:text-5xl font-semibold mb-2 sm:mb-3;
   }
 
   h2 {
-    @apply text-base font-bold mb-3;
+    @apply text-sm sm:text-base font-bold mb-2 sm:mb-3;
   }
 
   p {
-    @apply text-base font-normal leading-7;
+    @apply text-sm sm:text-base font-normal leading-6 sm:leading-7;
   }
 
   hr {
@@ -167,7 +183,7 @@
   }
 
   img {
-    @apply max-w-[40%] mb-6;
+    @apply max-w-[80%] sm:max-w-[60%] md:max-w-[40%] mb-4 sm:mb-6;
   }
 }
 

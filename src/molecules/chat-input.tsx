@@ -22,7 +22,7 @@ export const ChatInput = ({
   return (
     <div>
       {/* Top Toolbar */}
-      <div className="flex items-center justify-between mr-2 mb-1 px-1">
+      <div className="flex items-center justify-between mr-1 sm:mr-2 mb-1 px-1 sm:px-2">
         <div className="flex items-center gap-2">
           {/* <Button
                 variant="ghost"
@@ -40,17 +40,17 @@ export const ChatInput = ({
           <Button
             size="sm"
             disabled={!file}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors"
             onClick={handleSendMessage}
           >
-            <ArrowUp />
+            <ArrowUp className="w-3 h-3 sm:w-4 sm:h-4" />
           </Button>
         )}
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex items-end justify-center ">
-        <div className="w-full max-w-3xl px-2">
+      <div className="flex-1 flex items-end justify-center">
+        <div className="w-full max-w-3xl px-1 sm:px-2">
           {/* Input Container */}
           <div className="relative rounded-lg">
             {/* Textarea */}
@@ -58,12 +58,12 @@ export const ChatInput = ({
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask anything"
-              className="w-full bg-white border-0 resize-none text-gray-700 placeholder-gray-400 text-base leading-relaxed p-4 pr-16 min-h-[30px] max-h-[200px] focus:outline-none focus:ring-0 focus:border-transparent"
+              className="w-full bg-white border-0 resize-none text-gray-700 placeholder-gray-400 text-sm sm:text-base leading-relaxed p-2.5 sm:p-3 md:p-4 pr-12 sm:pr-14 md:pr-16 min-h-[30px] max-h-[150px] sm:max-h-[200px] focus:outline-none focus:ring-0 focus:border-transparent"
               rows={1}
             />
 
             {/* Right Side Buttons */}
-            <div className="absolute right-3 bottom-3 flex items-center gap-2">
+            <div className="absolute right-2 sm:right-3 bottom-2 sm:bottom-3 flex items-center gap-1 sm:gap-2">
               {/* <Button
                 variant="ghost"
                 size="sm"

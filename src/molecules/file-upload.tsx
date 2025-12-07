@@ -46,7 +46,7 @@ export const FileUpload = ({
 
   return (
     <section className="file-upload">
-      <div className="flex flex-col items-start">
+      <div className="flex flex-col items-stretch sm:items-start gap-2 w-full">
         <Input
           ref={inputRef}
           id="picture"
@@ -61,12 +61,12 @@ export const FileUpload = ({
           <PaperclipIcon />
           Add photos and files
         </Button> */}
-        <Button variant="ghost" size="sm" onClick={handleGenerateStudyGuide}>
-          <MapPlus />
+        <Button variant="ghost" size="sm" onClick={handleGenerateStudyGuide} className="w-full sm:w-auto justify-start text-xs sm:text-sm">
+          <MapPlus className="w-3 h-3 sm:w-4 sm:h-4" />
           Study Guide
         </Button>
-        <Button variant="ghost" size="sm" onClick={() => {}} disabled>
-          <FileQuestion />
+        <Button variant="ghost" size="sm" onClick={() => {}} disabled className="w-full sm:w-auto justify-start text-xs sm:text-sm">
+          <FileQuestion className="w-3 h-3 sm:w-4 sm:h-4" />
           Practice Questions
         </Button>
       </div>
